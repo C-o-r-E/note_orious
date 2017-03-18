@@ -51,10 +51,46 @@ Great! With all of this, I can give my container permission to use sound and gra
 
 At the time of writing this, systemd has a way of running machines with `machinectl`. You just need to store your machine in one of the predefined locations that systemd looks at. It will look for machines in `/var/lib/machines/`, `/usr/local/lib/machines/` or `/usr/lib/machines/`. However it seems to not follow symbolic links. I want to store my containers in a different location so I have to do something else.
 
-Normally you can start a machine by running `machinectl start rim` and you will be up and running. Since there are some customizations to do, a custom unit file will be needed for a custom service. I copied the provided template service `/usr/lib/systemd/system/systemd-nspawn@.service` and customized it. The naming convention is super important here. A template service will have a name like X@.service. If you start instances of the service with different names, they will show up as X@Y.service and X@Z.service. There are a few techniques for overriding specific instances of template units but I decided to entirely define one based on the above mentioned file. I saved mine as `/etc/systemd/system/systemd-nspawn@rim.service`. Here is the [file](files/systemd-nspawn@rim.service) for reference.
+Normally you can start a machine by running `machinectl start rim` and you will be up and running. Since there are some customizations to do, a custom unit file will be needed for a custom service. I copied the provided template service `/usr/lib/systemd/system/systemd-nspawn@.service` and customized it. The naming convention is super important here. A template service will have a name like X@.service. If you start instances of the service with different names, they will show up as X@Y.service and X@Z.service. There are a few techniques for overriding specific instances of template units but I decided to entirely define one based on the above mentioned file. I saved mine as `/etc/systemd/system/systemd-nspawn@rim.service`. Here is [the service file](files/systemd-nspawn@rim.service) for reference.
+
+Now to start the container I just do `systemctl start systemd-nspawn@rim.service`.
+
+### DeviceAllow
+
+Looking at [the unit file](files/systemd-nspawn@rim.service) you will see that the familiar systemd-nspawn binary as part of the ExecStart line. This time there is no `--bind` directives as they will be taken care of in the next section.  Note that the `--keep-unit` switch has to do with the cgroup appearing in the proper slice in the `/sys/fs/` hierarchy.
+
+One of the key parts of the unit file is the DeviceAllow settings. These allow us to automate setting the permissions for cgroup device accesss without using the unwieldy `/sys/fs` inteface discussed above. A combination of this, bind mounts and X11 forwarding allows for the goal to be met! 
+
+### .nspawn config files
+
+When starting a container, systemd-nspawn will look for an additional settings file in `/etc/systemd/nspawn`. It will attempt reading a file that corresponds to the name of the machine, so in my case it will be `/etc/systemd/nspawn/rim.nspawn`.
+
+Here is my [.nspawn config](files/rim.nspawn).
+
+It is very simple. There are 3 groups of bindings.
+
+ * X11
+ * ALSA
+ * Graphics
+
+With this file we are able to be a little cleaner than jamming all the directory binding in to the invokation of `systemd-nspawn`. Instead each bind now has its own line in the .nspawn file. For example `Bind=/dev/snd`.
+
+Note that my config file is set up for an Nvidia card. It will be different for ATI and Intel graphics devices.
 
 
-TODO: the rest of this
+### the final bits
+
+Almost there! Applications in this container should now be able to talk to the sound hardware and the graphics card. We need to be able to talk to X11 though! To do this we need to do 2 things:
+
+1. allow X11 on the host to listen for local clients
+  - Accomplished by running  `xhost +local:` on the host
+2. tell the container's apps to use the correct display
+  - either run `export DISPLAY=:0` from the container shell
+  - or add the export command to a startup script such as `.bashrc`
+
+### fin
+
+I think that's all. Let's call this a first draft?
 
  
 

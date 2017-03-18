@@ -1,0 +1,19 @@
+# settings for booting a rimworld image
+
+[Exec]
+Boot=1
+
+[Files]
+# X11
+Bind=/tmp/.X11-unix
+
+# ALSA
+Bind=/dev/snd
+
+# Graphics
+Bind=/dev/dri
+Bind=/dev/shm
+Bind=/dev/nvidia0
+Bind=/dev/nvidiactl
+Bind=/dev/nvidia-modeset
+

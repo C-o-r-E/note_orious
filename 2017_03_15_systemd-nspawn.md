@@ -5,7 +5,7 @@ I wanted to run an untrusted multimedia application on linux without having to d
 
 Some reasearch showed that SystemD has its own implementation of cgroup management called machinectl using a tool called systemd-nspawn. It is actually intended to be an abstraction allowing for management of fully virtualized machines or just containerized ones. It seems to full of really nice functionality such as being able to create an isolated snapshot of the current machine.
 
-I ofcourse was interested in getting sound a video acceleration running with it and some googling had suggested that others have succeded with that goal.
+I of course was interested in getting sound and video acceleration running with it and some googling had suggested that others have succeded with that goal.
 
 ### Basic container up and running
 
@@ -99,14 +99,21 @@ I think that's all. Let's call this a first draft?
 ## Useful Links:
 
 [https://www.kernel.org/doc/Documentation/cgroup-v1/devices.txt](https://www.kernel.org/doc/Documentation/cgroup-v1/devices.txt)
+
 [http://www.makelinux.net/ldd3/chp-3-sect-2](http://www.makelinux.net/ldd3/chp-3-sect-2)
+
 [https://www.freedesktop.org/wiki/Software/systemd/ControlGroupInterface/](https://www.freedesktop.org/wiki/Software/systemd/ControlGroupInterface/)
+
 [https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html#DeviceAllow=](https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html#DeviceAllow=)
+
 [https://www.freedesktop.org/software/systemd/man/systemd.nspawn.html#](https://www.freedesktop.org/software/systemd/man/systemd.nspawn.html#)
+
 [https://www.freedesktop.org/software/systemd/man/machinectl.html#](https://www.freedesktop.org/software/systemd/man/machinectl.html#)
+
 [https://wiki.archlinux.org/index.php/Change_root#Run_graphical_applications_from_chroot](https://wiki.archlinux.org/index.php/Change_root#Run_graphical_applications_from_chroot)
+
 [https://wiki.archlinux.org/index.php/Systemd-nspawn](https://wiki.archlinux.org/index.php/Systemd-nspawn)
+
 [Stack Overflow question](http://unix.stackexchange.com/questions/304252/access-usb-device-from-systemd-nspawn-container)
+
 [https://wiki.archlinux.org/index.php/cgroups](https://wiki.archlinux.org/index.php/cgroups)
-
-

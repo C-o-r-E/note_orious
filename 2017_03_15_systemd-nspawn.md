@@ -49,6 +49,12 @@ Great! With all of this, I can give my container permission to use sound and gra
 
 ### multimedia container service
 
-todo...
+At the time of writing this, systemd has a way of running machines with `machinectl`. You just need to store your machine in one of the predefined locations that systemd looks at. It will look for machines in `/var/lib/machines/`, `/usr/local/lib/machines/` or `/usr/lib/machines/`. However it seems to not follow symbolic links. I want to store my containers in a different location so I have to do something else.
+
+Normally you can start a machine by running `machinectl start rim` and you will be up and running. Since there are some customizations to do, a custom unit file will be needed for a custom service. I copied the provided template service `/usr/lib/systemd/system/systemd-nspawn@.service` and customized it. The naming convention is super important here. A template service will have a name like X@.service. If you start instances of the service with different names, they will show up as X@Y.service and X@Z.service. There are a few techniques for overriding specific instances of template units but I decided to entirely define one based on the above mentioned file. I saved mine as `/etc/systemd/system/systemd-nspawn@rim.service`. Here is the [file](files/systemd-nspawn@rim.service) for reference.
+
+
+TODO: the rest of this
+
  
 

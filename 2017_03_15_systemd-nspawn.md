@@ -20,9 +20,9 @@ Most of the very basics are covered on the [archwiki](https://wiki.archlinux.org
 For Multimedia to work we need to share some directories from the host to the container.
 
 1. X11
-  * `/tmp/.X11-unix`
+    * `/tmp/.X11-unix`
 2. ALSA
-  * `/dev/snd`
+    * `/dev/snd`
 
 This can be done on the command line as follows:
 
@@ -83,14 +83,30 @@ Note that my config file is set up for an Nvidia card. It will be different for 
 Almost there! Applications in this container should now be able to talk to the sound hardware and the graphics card. We need to be able to talk to X11 though! To do this we need to do 2 things:
 
 1. allow X11 on the host to listen for local clients
-  - Accomplished by running  `xhost +local:` on the host
+  * Accomplished by running  `xhost +local:` on the host
 2. tell the container's apps to use the correct display
-  - either run `export DISPLAY=:0` from the container shell
-  - or add the export command to a startup script such as `.bashrc`
+  * either run `export DISPLAY=:0` from the container shell
+  * or add the export command to a startup script such as `.bashrc`
 
 ### fin
 
 I think that's all. Let's call this a first draft?
 
- 
+
+
+
+
+## Useful Links:
+
+[https://www.kernel.org/doc/Documentation/cgroup-v1/devices.txt](https://www.kernel.org/doc/Documentation/cgroup-v1/devices.txt)
+[http://www.makelinux.net/ldd3/chp-3-sect-2](http://www.makelinux.net/ldd3/chp-3-sect-2)
+[https://www.freedesktop.org/wiki/Software/systemd/ControlGroupInterface/](https://www.freedesktop.org/wiki/Software/systemd/ControlGroupInterface/)
+[https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html#DeviceAllow=](https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html#DeviceAllow=)
+[https://www.freedesktop.org/software/systemd/man/systemd.nspawn.html#](https://www.freedesktop.org/software/systemd/man/systemd.nspawn.html#)
+[https://www.freedesktop.org/software/systemd/man/machinectl.html#](https://www.freedesktop.org/software/systemd/man/machinectl.html#)
+[https://wiki.archlinux.org/index.php/Change_root#Run_graphical_applications_from_chroot](https://wiki.archlinux.org/index.php/Change_root#Run_graphical_applications_from_chroot)
+[https://wiki.archlinux.org/index.php/Systemd-nspawn](https://wiki.archlinux.org/index.php/Systemd-nspawn)
+[Stack Overflow question](http://unix.stackexchange.com/questions/304252/access-usb-device-from-systemd-nspawn-container)
+[https://wiki.archlinux.org/index.php/cgroups](https://wiki.archlinux.org/index.php/cgroups)
+
 
